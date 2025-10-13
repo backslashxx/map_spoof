@@ -1,0 +1,9 @@
+menu "reboot"
+
+config MAP_SPOOF
+	bool "basic map spoof"
+	default y
+	help
+	  zeroes
+
+endmenu
