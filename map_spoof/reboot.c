@@ -76,9 +76,13 @@ int lkm_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user 
 		}
 		
 		list_for_each_entry(entry, &string_list, list) {
-			if (!strcmp(entry->string, buf))
+			if (!strcmp(entry->string, buf)) {
+				pr_info("LKM: %s is already here!\n", buf);
+				kfree(new_entry->string);
+				kfree(new_entry);
 				return 0;
-		}	
+			}
+		}
 		
 		pr_info("LKM: entry %s added!\n", buf);
 		list_add(&new_entry->list, &string_list);
