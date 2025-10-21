@@ -1,4 +1,4 @@
-menu "reboot"
+menu "map spoof"
 
 config MAP_SPOOF
 	bool "basic map spoof"
