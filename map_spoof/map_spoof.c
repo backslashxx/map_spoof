@@ -80,6 +80,9 @@ int lkm_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user 
 		list_add(&new_entry->list, &string_list);
 		smp_mb();
 
+		if (copy_to_user((void __user *)*arg, &ok, sizeof(ok)))
+			return 0;
+
 	}
 	
 	if (magic2 == CMD_DESTROY_LIST) {
@@ -92,22 +95,28 @@ int lkm_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user 
         		kfree(entry);
         	}
         	smp_mb();
+
+		if (copy_to_user((void __user *)*arg, &ok, sizeof(ok)))
+			return 0;
+
 	}
 
 	if (magic2 == CMD_ENABLE_SKIP_RWXP) {
 		atomic_set(&skip_rwxp, 1);
 		pr_info("map_spoof: skip_rwxp: 1\n");
 
+		if (copy_to_user((void __user *)*arg, &ok, sizeof(ok)))
+			return 0;
 	}
 
 	if (magic2 == CMD_DISABLE_SKIP_RWXP) {
 		atomic_set(&skip_rwxp, 0);
 		pr_info("map_spoof: skip_rwxp: 0\n");
-	}
 
-	// reply to the same pointer
-	if (copy_to_user((void __user *)*arg, &ok, sizeof(ok)))
-		return 0;
+		if (copy_to_user((void __user *)*arg, &ok, sizeof(ok)))
+			return 0;
+
+	}
 
 	return 0;
 }
